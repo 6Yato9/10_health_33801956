@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand">
+          <span class="brand-icon">💪</span>
+          <span class="brand-text">FitTracker</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-label="Toggle navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/exercises" class="nav-link">Exercises</a></li>
+          <li><a href="/search" class="nav-link">Search</a></li>
+          <li><a href="/about" class="nav-link">About</a></li>
+
+          <% if (user) { %>
+          <li class="nav-dropdown">
+            <a href="#" class="nav-link dropdown-toggle">My Fitness</a>
+            <ul class="dropdown-menu">
+              <li><a href="/workouts">My Workouts</a></li>
+              <li><a href="/workouts/new">Log Workout</a></li>
+              <li><a href="/goals">My Goals</a></li>
+              <li><a href="/goals/new">New Goal</a></li>
+            </ul>
+          </li>
+          <li class="nav-dropdown">
+            <a href="#" class="nav-link dropdown-toggle">
+              <span class="user-avatar"
+                ><%= user.username.charAt(0).toUpperCase() %></span
+              >
+              <%= user.username %>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/auth/profile">Profile</a></li>
+              <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+          </li>
+          <% } else { %>
+          <li><a href="/auth/login" class="nav-link">Login</a></li>
+          <li>
+            <a href="/auth/register" class="nav-link btn-primary">Sign Up</a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="main-content">
+      <% if (success) { %>
+      <div class="alert alert-success">
+        <span class="alert-icon">✓</span>
+        <%= success %>
+        <button class="alert-close" onclick="this.parentElement.remove()">
+          ×
+        </button>
+      </div>
+      <% } %> <% if (error) { %>
+      <div class="alert alert-error">
+        <span class="alert-icon">!</span>
+        <%= error %>
+        <button class="alert-close" onclick="this.parentElement.remove()">
+          ×
+        </button>
+      </div>
+      <% } %>
+    </main>
+  </body>
+</html>

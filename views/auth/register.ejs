@@ -1,0 +1,151 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="auth-page">
+    <div class="auth-card auth-card-wide">
+      <div class="auth-header">
+        <h1>Create Account</h1>
+        <p>Join FitTracker and start your fitness journey</p>
+      </div>
+
+      <% if (errors && errors.length > 0) { %>
+      <div class="alert alert-error">
+        <ul class="error-list">
+          <% errors.forEach(function(error) { %>
+          <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% } %>
+
+      <form action="/auth/register" method="POST" class="auth-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              class="form-input"
+              value="<%= formData.firstName || '' %>"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              class="form-input"
+              value="<%= formData.lastName || '' %>"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Username *</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            required
+            value="<%= formData.username || '' %>"
+          />
+          <small class="form-hint">At least 3 characters</small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-input"
+            required
+            value="<%= formData.email || '' %>"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            required
+          />
+          <small class="form-hint"
+            >At least 8 characters with uppercase, lowercase, number, and
+            special character</small
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password *</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <div class="password-requirements">
+          <p><strong>Password must contain:</strong></p>
+          <ul>
+            <li id="req-length" class="requirement">At least 8 characters</li>
+            <li id="req-lower" class="requirement">
+              At least one lowercase letter
+            </li>
+            <li id="req-upper" class="requirement">
+              At least one uppercase letter
+            </li>
+            <li id="req-number" class="requirement">At least one number</li>
+            <li id="req-special" class="requirement">
+              At least one special character (!@#$%^&* etc.)
+            </li>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="/auth/login">Sign in</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Real-time password validation
+  const password = document.getElementById("password");
+  const requirements = {
+    length: document.getElementById("req-length"),
+    lower: document.getElementById("req-lower"),
+    upper: document.getElementById("req-upper"),
+    number: document.getElementById("req-number"),
+    special: document.getElementById("req-special"),
+  };
+
+  password.addEventListener("input", function () {
+    const val = this.value;
+
+    requirements.length.classList.toggle("met", val.length >= 8);
+    requirements.lower.classList.toggle("met", /[a-z]/.test(val));
+    requirements.upper.classList.toggle("met", /[A-Z]/.test(val));
+    requirements.number.classList.toggle("met", /[0-9]/.test(val));
+    requirements.special.classList.toggle(
+      "met",
+      /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)
+    );
+  });
+</script>
+
+<%- include('../partials/footer') %>

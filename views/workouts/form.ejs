@@ -1,0 +1,181 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <nav class="breadcrumb">
+        <a href="/workouts">Workouts</a>
+        <span>/</span>
+        <span><%= workout ? 'Edit Workout' : 'Log New Workout' %></span>
+    </nav>
+    
+    <div class="page-header">
+        <h1><%= workout ? 'Edit Workout' : 'Log New Workout' %></h1>
+    </div>
+    
+    <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+            <ul class="error-list">
+                <% errors.forEach(function(error) { %>
+                    <li><%= error %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    
+    <div class="form-container">
+        <form action="<%= workout ? '/workouts/' + workout.id + '/edit' : '/workouts/new' %>" method="POST" class="workout-form">
+            <div class="card">
+                <h3>Workout Details</h3>
+                
+                <div class="form-group">
+                    <label for="name">Workout Name *</label>
+                    <input type="text" id="name" name="name" class="form-input" required 
+                           value="<%= workout ? workout.name : '' %>" 
+                           placeholder="e.g., Morning Cardio, Leg Day">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="workoutDate">Date *</label>
+                        <input type="date" id="workoutDate" name="workoutDate" class="form-input" required
+                               value="<%= workout && workout.workout_date ? new Date(workout.workout_date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0] %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="durationMinutes">Duration (minutes)</label>
+                        <input type="number" id="durationMinutes" name="durationMinutes" class="form-input" 
+                               min="1" max="600" value="<%= workout ? workout.duration_minutes : '' %>"
+                               placeholder="e.g., 45">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="totalCalories">Calories Burned</label>
+                        <input type="number" id="totalCalories" name="totalCalories" class="form-input" 
+                               min="0" max="10000" value="<%= workout ? workout.total_calories : '' %>"
+                               placeholder="e.g., 350">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select id="rating" name="rating" class="form-select">
+                            <option value="">Select rating...</option>
+                            <option value="1" <%= workout && workout.rating === 1 ? 'selected' : '' %>>⭐ - Poor</option>
+                            <option value="2" <%= workout && workout.rating === 2 ? 'selected' : '' %>>⭐⭐ - Fair</option>
+                            <option value="3" <%= workout && workout.rating === 3 ? 'selected' : '' %>>⭐⭐⭐ - Good</option>
+                            <option value="4" <%= workout && workout.rating === 4 ? 'selected' : '' %>>⭐⭐⭐⭐ - Great</option>
+                            <option value="5" <%= workout && workout.rating === 5 ? 'selected' : '' %>>⭐⭐⭐⭐⭐ - Excellent</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" class="form-textarea" rows="3" 
+                              placeholder="How did the workout feel? Any achievements or challenges?"><%= workout ? workout.notes : '' %></textarea>
+                </div>
+            </div>
+            
+            <% if (workout) { %>
+                <div class="card">
+                    <h3>Exercises in this Workout</h3>
+                    
+                    <% if (workoutExercises && workoutExercises.length > 0) { %>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Exercise</th>
+                                    <th>Sets</th>
+                                    <th>Reps</th>
+                                    <th>Weight</th>
+                                    <th>Duration</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% workoutExercises.forEach(function(we) { %>
+                                    <tr>
+                                        <td><%= we.exercise_name %></td>
+                                        <td><%= we.sets || '-' %></td>
+                                        <td><%= we.reps || '-' %></td>
+                                        <td><%= we.weight_kg ? we.weight_kg + ' kg' : '-' %></td>
+                                        <td><%= we.duration_minutes ? we.duration_minutes + ' min' : '-' %></td>
+                                        <td>
+                                            <form action="/workouts/<%= workout.id %>/exercises/<%= we.id %>/delete" method="POST" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Remove this exercise?')">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="empty-state-small">No exercises added yet.</p>
+                    <% } %>
+                    
+                    <details class="add-exercise-section">
+                        <summary class="btn btn-outline btn-sm">+ Add Exercise</summary>
+                        <div class="add-exercise-form">
+                            <form action="/workouts/<%= workout.id %>/exercises" method="POST">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="exerciseId">Exercise</label>
+                                        <select id="exerciseId" name="exerciseId" class="form-select" required>
+                                            <option value="">Select exercise...</option>
+                                            <% let currentCategory = ''; %>
+                                            <% exercises.forEach(function(ex) { %>
+                                                <% if (ex.category_name !== currentCategory) { %>
+                                                    <% if (currentCategory !== '') { %></optgroup><% } %>
+                                                    <optgroup label="<%= ex.category_name || 'General' %>">
+                                                    <% currentCategory = ex.category_name; %>
+                                                <% } %>
+                                                <option value="<%= ex.id %>"><%= ex.name %></option>
+                                            <% }); %>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row form-row-4">
+                                    <div class="form-group">
+                                        <label for="sets">Sets</label>
+                                        <input type="number" id="sets" name="sets" class="form-input" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reps">Reps</label>
+                                        <input type="number" id="reps" name="reps" class="form-input" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight">Weight (kg)</label>
+                                        <input type="number" id="weight" name="weight" class="form-input" step="0.5" min="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="duration">Duration (min)</label>
+                                        <input type="number" id="duration" name="duration" class="form-input" min="1">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exerciseNotes">Notes</label>
+                                    <input type="text" id="exerciseNotes" name="notes" class="form-input" placeholder="Optional notes">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Add Exercise</button>
+                            </form>
+                        </div>
+                    </details>
+                </div>
+            <% } %>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><%= workout ? 'Update Workout' : 'Save Workout' %></button>
+                <a href="/workouts" class="btn btn-outline">Cancel</a>
+                
+                <% if (workout) { %>
+                    <form action="/workouts/<%= workout.id %>/delete" method="POST" style="display:inline; margin-left: auto;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this workout?')">Delete Workout</button>
+                    </form>
+                <% } %>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

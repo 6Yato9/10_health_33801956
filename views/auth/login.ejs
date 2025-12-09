@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to your FitTracker account</p>
+      </div>
+
+      <% if (errors && errors.length > 0) { %>
+      <div class="alert alert-error">
+        <ul class="error-list">
+          <% errors.forEach(function(error) { %>
+          <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+      <% } %>
+
+      <form action="/auth/login" method="POST" class="auth-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-input"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Don't have an account? <a href="/auth/register">Create one</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

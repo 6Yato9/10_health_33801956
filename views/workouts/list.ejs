@@ -1,0 +1,92 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <div class="page-header">
+    <div class="page-header-content">
+      <h1>My Workouts</h1>
+      <p>Track and manage your workout history</p>
+    </div>
+    <a href="/workouts/new" class="btn btn-primary">+ Log Workout</a>
+  </div>
+
+  <% if (workouts.length > 0) { %>
+  <div class="workouts-list">
+    <% workouts.forEach(function(workout) { %>
+    <div class="workout-card">
+      <div class="workout-date">
+        <span class="date-day"
+          ><%= new Date(workout.workout_date).getDate() %></span
+        >
+        <span class="date-month"
+          ><%= new Date(workout.workout_date).toLocaleString('default', { month:
+          'short' }) %></span
+        >
+      </div>
+      <div class="workout-info">
+        <h3><a href="/workouts/<%= workout.id %>"><%= workout.name %></a></h3>
+        <div class="workout-meta">
+          <% if (workout.duration_minutes) { %>
+          <span>⏱️ <%= workout.duration_minutes %> min</span>
+          <% } %> <% if (workout.total_calories) { %>
+          <span>🔥 <%= workout.total_calories %> cal</span>
+          <% } %> <% if (workout.exercise_count) { %>
+          <span>💪 <%= workout.exercise_count %> exercises</span>
+          <% } %>
+        </div>
+        <% if (workout.notes) { %>
+        <p class="workout-notes">
+          <%= workout.notes.substring(0, 100) %><%= workout.notes.length > 100 ?
+          '...' : '' %>
+        </p>
+        <% } %>
+      </div>
+      <div class="workout-rating">
+        <% if (workout.rating) { %> <% for (let i = 1; i <= 5; i++) { %>
+        <span class="star <%= i <= workout.rating ? 'filled' : '' %>">★</span>
+        <% } %> <% } %>
+      </div>
+      <div class="workout-actions">
+        <a href="/workouts/<%= workout.id %>" class="btn btn-sm btn-outline"
+          >View</a
+        >
+        <a
+          href="/workouts/<%= workout.id %>/edit"
+          class="btn btn-sm btn-outline"
+          >Edit</a
+        >
+      </div>
+    </div>
+    <% }); %>
+  </div>
+
+  <% if (totalPages > 1) { %>
+  <div class="pagination">
+    <% if (currentPage > 1) { %>
+    <a
+      href="/workouts?page=<%= currentPage - 1 %>"
+      class="btn btn-sm btn-outline"
+      >← Previous</a
+    >
+    <% } %>
+
+    <span class="page-info">Page <%= currentPage %> of <%= totalPages %></span>
+
+    <% if (currentPage < totalPages) { %>
+    <a
+      href="/workouts?page=<%= currentPage + 1 %>"
+      class="btn btn-sm btn-outline"
+      >Next →</a
+    >
+    <% } %>
+  </div>
+  <% } %> <% } else { %>
+  <div class="empty-state">
+    <div class="empty-icon">🏋️</div>
+    <h2>No Workouts Yet</h2>
+    <p>Start tracking your fitness journey by logging your first workout.</p>
+    <a href="/workouts/new" class="btn btn-primary">Log Your First Workout</a>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

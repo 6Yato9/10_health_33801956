@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Exercise Library</h1>
+        <p>Browse our collection of exercises to add to your workouts</p>
+    </div>
+    
+    <div class="filter-bar">
+        <form action="/exercises" method="GET" class="filter-form">
+            <div class="filter-group">
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    <% categories.forEach(function(cat) { %>
+                        <option value="<%= cat.name %>" <%= selectedCategory === cat.name ? 'selected' : '' %>><%= cat.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="difficulty">Difficulty</label>
+                <select name="difficulty" id="difficulty" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Levels</option>
+                    <option value="beginner" <%= selectedDifficulty === 'beginner' ? 'selected' : '' %>>Beginner</option>
+                    <option value="intermediate" <%= selectedDifficulty === 'intermediate' ? 'selected' : '' %>>Intermediate</option>
+                    <option value="advanced" <%= selectedDifficulty === 'advanced' ? 'selected' : '' %>>Advanced</option>
+                </select>
+            </div>
+            
+            <% if (selectedCategory || selectedDifficulty) { %>
+                <a href="/exercises" class="btn btn-outline btn-sm">Clear Filters</a>
+            <% } %>
+        </form>
+    </div>
+    
+    <% if (exercises.length > 0) { %>
+        <div class="exercises-grid">
+            <% exercises.forEach(function(exercise) { %>
+                <div class="exercise-card">
+                    <div class="exercise-header">
+                        <span class="exercise-category"><%= exercise.category_name || 'General' %></span>
+                        <span class="exercise-difficulty difficulty-<%= exercise.difficulty %>"><%= exercise.difficulty %></span>
+                    </div>
+                    <h3><a href="/exercises/<%= exercise.id %>"><%= exercise.name %></a></h3>
+                    <% if (exercise.muscle_group) { %>
+                        <p class="exercise-muscles"><strong>Targets:</strong> <%= exercise.muscle_group %></p>
+                    <% } %>
+                    <% if (exercise.calories_per_minute) { %>
+                        <p class="exercise-calories">🔥 ~<%= exercise.calories_per_minute %> cal/min</p>
+                    <% } %>
+                    <a href="/exercises/<%= exercise.id %>" class="btn btn-sm btn-outline">View Details</a>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="empty-state">
+            <p>No exercises found matching your criteria.</p>
+            <a href="/exercises" class="btn btn-primary">View All Exercises</a>
+        </div>
+    <% } %>
+</div>
+
+<%- include('partials/footer') %>

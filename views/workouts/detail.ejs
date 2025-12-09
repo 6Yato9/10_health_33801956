@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="/workouts">Workouts</a>
+    <span>/</span>
+    <span><%= workout.name %></span>
+  </nav>
+
+  <div class="detail-page">
+    <div class="detail-header">
+      <div class="workout-date-large">
+        <span class="date-day"
+          ><%= new Date(workout.workout_date).getDate() %></span
+        >
+        <span class="date-month"
+          ><%= new Date(workout.workout_date).toLocaleString('default', { month:
+          'long', year: 'numeric' }) %></span
+        >
+      </div>
+      <h1><%= workout.name %></h1>
+      <% if (workout.rating) { %>
+      <div class="rating-display">
+        <% for (let i = 1; i <= 5; i++) { %>
+        <span class="star <%= i <= workout.rating ? 'filled' : '' %>">★</span>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="workout-stats-bar">
+      <% if (workout.duration_minutes) { %>
+      <div class="workout-stat">
+        <span class="stat-icon">⏱️</span>
+        <span class="stat-value"><%= workout.duration_minutes %></span>
+        <span class="stat-label">minutes</span>
+      </div>
+      <% } %> <% if (workout.total_calories) { %>
+      <div class="workout-stat">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-value"><%= workout.total_calories %></span>
+        <span class="stat-label">calories</span>
+      </div>
+      <% } %>
+      <div class="workout-stat">
+        <span class="stat-icon">💪</span>
+        <span class="stat-value"><%= workoutExercises.length %></span>
+        <span class="stat-label">exercises</span>
+      </div>
+    </div>
+
+    <% if (workout.notes) { %>
+    <div class="card">
+      <h3>Notes</h3>
+      <p><%= workout.notes %></p>
+    </div>
+    <% } %>
+
+    <div class="card">
+      <h3>Exercises Performed</h3>
+
+      <% if (workoutExercises.length > 0) { %>
+      <div class="exercise-list">
+        <% workoutExercises.forEach(function(we) { %>
+        <div class="exercise-item">
+          <div class="exercise-item-header">
+            <h4>
+              <a href="/exercises/<%= we.exercise_id %>"
+                ><%= we.exercise_name %></a
+              >
+            </h4>
+            <span class="badge"><%= we.category_name || 'General' %></span>
+          </div>
+          <div class="exercise-item-details">
+            <% if (we.sets) { %>
+            <span><strong><%= we.sets %></strong> sets</span>
+            <% } %> <% if (we.reps) { %>
+            <span><strong><%= we.reps %></strong> reps</span>
+            <% } %> <% if (we.weight_kg) { %>
+            <span><strong><%= we.weight_kg %></strong> kg</span>
+            <% } %> <% if (we.duration_minutes) { %>
+            <span><strong><%= we.duration_minutes %></strong> min</span>
+            <% } %> <% if (we.calories_burned) { %>
+            <span>🔥 <strong><%= we.calories_burned %></strong> cal</span>
+            <% } %>
+          </div>
+          <% if (we.notes) { %>
+          <p class="exercise-item-notes"><%= we.notes %></p>
+          <% } %> <% if (we.muscle_group) { %>
+          <p class="exercise-item-muscles">Targets: <%= we.muscle_group %></p>
+          <% } %>
+        </div>
+        <% }); %>
+      </div>
+      <% } else { %>
+      <p class="empty-state-small">No exercises recorded for this workout.</p>
+      <% } %>
+    </div>
+
+    <div class="detail-actions">
+      <a href="/workouts/<%= workout.id %>/edit" class="btn btn-primary"
+        >Edit Workout</a
+      >
+      <a href="/workouts" class="btn btn-outline">Back to Workouts</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,160 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+  <nav class="breadcrumb">
+    <a href="/goals">Goals</a>
+    <span>/</span>
+    <span><%= goal.title %></span>
+  </nav>
+
+  <div class="detail-page">
+    <div class="detail-header">
+      <div class="detail-badges">
+        <span class="badge"><%= goal.goal_type.replace('_', ' ') %></span>
+        <span class="badge badge-<%= goal.status %>"><%= goal.status %></span>
+      </div>
+      <h1><%= goal.title %></h1>
+    </div>
+
+    <% if (goal.target_value) { %>
+    <div class="goal-progress-large">
+      <div class="progress-circle" style="--progress: <%= goal.progress %>">
+        <span class="progress-value"><%= goal.progress %>%</span>
+      </div>
+      <div class="progress-details">
+        <div class="progress-stat">
+          <span class="stat-label">Current</span>
+          <span class="stat-value"
+            ><%= goal.current_value || 0 %> <%= goal.unit || '' %></span
+          >
+        </div>
+        <div class="progress-stat">
+          <span class="stat-label">Target</span>
+          <span class="stat-value"
+            ><%= goal.target_value %> <%= goal.unit || '' %></span
+          >
+        </div>
+        <div class="progress-stat">
+          <span class="stat-label">Remaining</span>
+          <span class="stat-value"
+            ><%= Math.max(0, goal.target_value - (goal.current_value ||
+            0)).toFixed(2) %> <%= goal.unit || '' %></span
+          >
+        </div>
+      </div>
+    </div>
+
+    <% if (goal.status === 'active') { %>
+    <div class="quick-update card">
+      <h3>Quick Progress Update</h3>
+      <form
+        action="/goals/<%= goal.id %>/progress"
+        method="POST"
+        class="inline-form"
+      >
+        <div class="form-group">
+          <label for="currentValue">New Current Value</label>
+          <input
+            type="number"
+            id="currentValue"
+            name="currentValue"
+            class="form-input"
+            step="0.01"
+            min="0"
+            value="<%= goal.current_value || 0 %>"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Update Progress</button>
+      </form>
+    </div>
+    <% } %> <% } %>
+
+    <div class="detail-content">
+      <div class="detail-main">
+        <% if (goal.description) { %>
+        <div class="card">
+          <h3>Description</h3>
+          <p><%= goal.description %></p>
+        </div>
+        <% } %>
+
+        <div class="card">
+          <h3>Timeline</h3>
+          <div class="timeline-info">
+            <div class="timeline-item">
+              <span class="timeline-label">Started</span>
+              <span class="timeline-value"
+                ><%= new Date(goal.start_date).toLocaleDateString('en-GB', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                }) %></span
+              >
+            </div>
+            <% if (goal.target_date) { %>
+            <div class="timeline-item">
+              <span class="timeline-label">Target Date</span>
+              <span class="timeline-value"
+                ><%= new Date(goal.target_date).toLocaleDateString('en-GB', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                }) %></span
+              >
+            </div>
+            <% if (goal.daysRemaining !== undefined) { %>
+            <div class="timeline-item">
+              <span class="timeline-label">Days Remaining</span>
+              <span
+                class="timeline-value <%= goal.daysRemaining < 0 ? 'overdue' : '' %>"
+              >
+                <% if (goal.daysRemaining < 0) { %> <%=
+                Math.abs(goal.daysRemaining) %> days overdue <% } else if
+                (goal.daysRemaining === 0) { %> Due today! <% } else { %> <%=
+                goal.daysRemaining %> days <% } %>
+              </span>
+            </div>
+            <% } %> <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-sidebar">
+        <div class="info-card">
+          <h3>Goal Info</h3>
+          <dl class="info-list">
+            <dt>Type</dt>
+            <dd><%= goal.goal_type.replace('_', ' ') %></dd>
+
+            <dt>Status</dt>
+            <dd>
+              <span class="badge badge-<%= goal.status %>"
+                ><%= goal.status %></span
+              >
+            </dd>
+
+            <dt>Created</dt>
+            <dd><%= new Date(goal.created_at).toLocaleDateString() %></dd>
+
+            <% if (goal.updated_at) { %>
+            <dt>Last Updated</dt>
+            <dd><%= new Date(goal.updated_at).toLocaleDateString() %></dd>
+            <% } %>
+          </dl>
+        </div>
+
+        <% if (goal.status === 'completed') { %>
+        <div class="success-card">
+          <span class="success-icon">🎉</span>
+          <h4>Goal Completed!</h4>
+          <p>Congratulations on achieving your goal!</p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      <a href="/goals/<%= goal.id %>/edit" class="btn btn-primary">Edit Goal</a>
+      <a href="/goals" class="btn btn-outline">Back to Goals</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

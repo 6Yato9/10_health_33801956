@@ -1,0 +1,124 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <nav class="breadcrumb">
+        <a href="/goals">Goals</a>
+        <span>/</span>
+        <span><%= goal ? 'Edit Goal' : 'Create New Goal' %></span>
+    </nav>
+    
+    <div class="page-header">
+        <h1><%= goal ? 'Edit Goal' : 'Create New Goal' %></h1>
+    </div>
+    
+    <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+            <ul class="error-list">
+                <% errors.forEach(function(error) { %>
+                    <li><%= error %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    
+    <div class="form-container">
+        <form action="<%= goal ? '/goals/' + goal.id + '/edit' : '/goals/new' %>" method="POST" class="goal-form">
+            <div class="card">
+                <h3>Goal Details</h3>
+                
+                <div class="form-group">
+                    <label for="title">Goal Title *</label>
+                    <input type="text" id="title" name="title" class="form-input" required 
+                           value="<%= goal ? goal.title : '' %>" 
+                           placeholder="e.g., Lose 5kg, Run a 10K">
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" class="form-textarea" rows="3" 
+                              placeholder="Describe your goal and why it's important to you"><%= goal ? goal.description : '' %></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goalType">Goal Type *</label>
+                        <select id="goalType" name="goalType" class="form-select" required>
+                            <option value="">Select type...</option>
+                            <option value="weight_loss" <%= goal && goal.goal_type === 'weight_loss' ? 'selected' : '' %>>Weight Loss</option>
+                            <option value="muscle_gain" <%= goal && goal.goal_type === 'muscle_gain' ? 'selected' : '' %>>Muscle Gain</option>
+                            <option value="endurance" <%= goal && goal.goal_type === 'endurance' ? 'selected' : '' %>>Endurance</option>
+                            <option value="flexibility" <%= goal && goal.goal_type === 'flexibility' ? 'selected' : '' %>>Flexibility</option>
+                            <option value="general_fitness" <%= goal && goal.goal_type === 'general_fitness' ? 'selected' : '' %>>General Fitness</option>
+                            <option value="other" <%= goal && goal.goal_type === 'other' ? 'selected' : '' %>>Other</option>
+                        </select>
+                    </div>
+                    
+                    <% if (goal) { %>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" name="status" class="form-select">
+                                <option value="active" <%= goal.status === 'active' ? 'selected' : '' %>>Active</option>
+                                <option value="completed" <%= goal.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                <option value="abandoned" <%= goal.status === 'abandoned' ? 'selected' : '' %>>Abandoned</option>
+                            </select>
+                        </div>
+                    <% } %>
+                </div>
+                
+                <h4>Target & Progress</h4>
+                
+                <div class="form-row form-row-3">
+                    <div class="form-group">
+                        <label for="targetValue">Target Value</label>
+                        <input type="number" id="targetValue" name="targetValue" class="form-input" 
+                               step="0.01" min="0" value="<%= goal ? goal.target_value : '' %>"
+                               placeholder="e.g., 5, 10, 100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="currentValue">Current Value</label>
+                        <input type="number" id="currentValue" name="currentValue" class="form-input" 
+                               step="0.01" min="0" value="<%= goal ? goal.current_value : '0' %>"
+                               placeholder="e.g., 0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="unit">Unit</label>
+                        <input type="text" id="unit" name="unit" class="form-input" 
+                               value="<%= goal ? goal.unit : '' %>"
+                               placeholder="e.g., kg, km, reps">
+                    </div>
+                </div>
+                
+                <h4>Timeline</h4>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Start Date *</label>
+                        <input type="date" id="startDate" name="startDate" class="form-input" required
+                               value="<%= goal && goal.start_date ? new Date(goal.start_date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0] %>">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetDate">Target Date</label>
+                        <input type="date" id="targetDate" name="targetDate" class="form-input"
+                               value="<%= goal && goal.target_date ? new Date(goal.target_date).toISOString().split('T')[0] : '' %>">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary"><%= goal ? 'Update Goal' : 'Create Goal' %></button>
+                <a href="/goals" class="btn btn-outline">Cancel</a>
+                
+                <% if (goal) { %>
+                    <form action="/goals/<%= goal.id %>/delete" method="POST" style="display:inline; margin-left: auto;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this goal?')">Delete Goal</button>
+                    </form>
+                <% } %>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,138 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Search</h1>
+    <p>Find exercises, workouts, and users</p>
+  </div>
+
+  <div class="search-container">
+    <form action="/search" method="GET" class="search-form">
+      <div class="search-input-group">
+        <input
+          type="text"
+          name="q"
+          value="<%= query %>"
+          placeholder="Search for exercises, workouts..."
+          class="search-input"
+          autofocus
+        />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+
+      <div class="search-filters">
+        <label class="filter-label">
+          <input type="radio" name="type" value="all" <%= type === 'all' ?
+          'checked' : '' %>> All
+        </label>
+        <label class="filter-label">
+          <input type="radio" name="type" value="exercises" <%= type ===
+          'exercises' ? 'checked' : '' %>> Exercises
+        </label>
+        <% if (user) { %>
+        <label class="filter-label">
+          <input type="radio" name="type" value="workouts" <%= type ===
+          'workouts' ? 'checked' : '' %>> My Workouts
+        </label>
+        <% } %>
+        <label class="filter-label">
+          <input type="radio" name="type" value="users" <%= type === 'users' ?
+          'checked' : '' %>> Users
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <% if (query) { %>
+  <div class="search-results">
+    <h2>Results for "<%= query %>"</h2>
+
+    <% if (results.exercises.length === 0 && results.workouts.length === 0 &&
+    results.users.length === 0) { %>
+    <div class="empty-state">
+      <p>No results found for "<%= query %>". Try a different search term.</p>
+    </div>
+    <% } %> <% if (results.exercises.length > 0) { %>
+    <div class="results-section">
+      <h3>Exercises (<%= results.exercises.length %>)</h3>
+      <div class="results-grid">
+        <% results.exercises.forEach(function(exercise) { %>
+        <div class="result-card">
+          <a href="/exercises/<%= exercise.id %>">
+            <h4><%= exercise.name %></h4>
+            <p class="result-meta">
+              <span class="badge"
+                ><%= exercise.category_name || 'General' %></span
+              >
+              <span class="badge badge-secondary"
+                ><%= exercise.difficulty %></span
+              >
+            </p>
+            <% if (exercise.muscle_group) { %>
+            <p class="result-detail">Targets: <%= exercise.muscle_group %></p>
+            <% } %>
+          </a>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+    <% } %> <% if (results.workouts.length > 0) { %>
+    <div class="results-section">
+      <h3>Workouts (<%= results.workouts.length %>)</h3>
+      <div class="results-grid">
+        <% results.workouts.forEach(function(workout) { %>
+        <div class="result-card">
+          <a href="/workouts/<%= workout.id %>">
+            <h4><%= workout.name %></h4>
+            <p class="result-meta">
+              <%= new Date(workout.workout_date).toLocaleDateString() %> <% if
+              (workout.duration_minutes) { %> • <%= workout.duration_minutes %>
+              min <% } %>
+            </p>
+            <% if (workout.notes) { %>
+            <p class="result-detail">
+              <%= workout.notes.substring(0, 100) %><%= workout.notes.length >
+              100 ? '...' : '' %>
+            </p>
+            <% } %>
+          </a>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+    <% } %> <% if (results.users.length > 0) { %>
+    <div class="results-section">
+      <h3>Users (<%= results.users.length %>)</h3>
+      <div class="results-grid">
+        <% results.users.forEach(function(u) { %>
+        <div class="result-card user-card">
+          <div class="user-avatar-large">
+            <%= u.username.charAt(0).toUpperCase() %>
+          </div>
+          <h4><%= u.username %></h4>
+          <% if (u.first_name || u.last_name) { %>
+          <p class="result-detail"><%= u.first_name %> <%= u.last_name %></p>
+          <% } %>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  <% } else { %>
+  <div class="search-suggestions">
+    <h3>Popular Searches</h3>
+    <div class="suggestion-tags">
+      <a href="/search?q=cardio&type=exercises" class="tag">Cardio</a>
+      <a href="/search?q=strength&type=exercises" class="tag">Strength</a>
+      <a href="/search?q=legs&type=exercises" class="tag">Legs</a>
+      <a href="/search?q=chest&type=exercises" class="tag">Chest</a>
+      <a href="/search?q=back&type=exercises" class="tag">Back</a>
+      <a href="/search?q=yoga&type=exercises" class="tag">Yoga</a>
+      <a href="/search?q=hiit&type=exercises" class="tag">HIIT</a>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

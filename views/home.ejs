@@ -1,0 +1,179 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Track Your Fitness Journey</h1>
+    <p>
+      Log workouts, set goals, and achieve your health objectives with
+      FitTracker
+    </p>
+    <% if (!user) { %>
+    <div class="hero-buttons">
+      <a href="/auth/register" class="btn btn-primary btn-lg"
+        >Get Started Free</a
+      >
+      <a href="/auth/login" class="btn btn-outline btn-lg">Login</a>
+    </div>
+    <% } else { %>
+    <div class="hero-buttons">
+      <a href="/workouts/new" class="btn btn-primary btn-lg">Log Workout</a>
+      <a href="/goals/new" class="btn btn-outline btn-lg">Set New Goal</a>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <span class="stat-number"><%= stats.totalUsers %></span>
+        <span class="stat-label">Active Users</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏋️</span>
+        <span class="stat-number"><%= stats.totalWorkouts %></span>
+        <span class="stat-label">Workouts Logged</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📋</span>
+        <span class="stat-number"><%= stats.totalExercises %></span>
+        <span class="stat-label">Exercises Available</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (user && userStats) { %>
+<section class="dashboard-section">
+  <div class="container">
+    <h2>Welcome back, <%= user.profile?.first_name || user.username %>!</h2>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3>Your Stats</h3>
+        <div class="user-stats">
+          <div class="user-stat">
+            <span class="user-stat-value"
+              ><%= userStats.total_workouts || 0 %></span
+            >
+            <span class="user-stat-label">Total Workouts</span>
+          </div>
+          <div class="user-stat">
+            <span class="user-stat-value"
+              ><%= userStats.total_minutes || 0 %></span
+            >
+            <span class="user-stat-label">Minutes Exercised</span>
+          </div>
+          <div class="user-stat">
+            <span class="user-stat-value"
+              ><%= userStats.total_calories || 0 %></span
+            >
+            <span class="user-stat-label">Calories Burned</span>
+          </div>
+          <div class="user-stat">
+            <span class="user-stat-value"
+              ><%= userStats.completed_goals || 0 %>/<%= userStats.total_goals
+              || 0 %></span
+            >
+            <span class="user-stat-label">Goals Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Recent Workouts</h3>
+        <% if (recentWorkouts.length > 0) { %>
+        <ul class="recent-list">
+          <% recentWorkouts.forEach(function(workout) { %>
+          <li class="recent-item">
+            <a href="/workouts/<%= workout.id %>">
+              <span class="recent-name"><%= workout.name %></span>
+              <span class="recent-meta">
+                <%= new Date(workout.workout_date).toLocaleDateString() %> <% if
+                (workout.duration_minutes) { %> • <%= workout.duration_minutes
+                %> min <% } %>
+              </span>
+            </a>
+          </li>
+          <% }); %>
+        </ul>
+        <a href="/workouts" class="btn btn-sm">View All Workouts</a>
+        <% } else { %>
+        <p class="empty-state">
+          No workouts yet. <a href="/workouts/new">Log your first workout!</a>
+        </p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="features-section">
+  <div class="container">
+    <h2>Everything You Need to Stay Fit</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📊</span>
+        <h3>Track Workouts</h3>
+        <p>
+          Log your exercises, sets, reps, and duration. Track your progress over
+          time with detailed statistics.
+        </p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <h3>Set Goals</h3>
+        <p>
+          Create fitness goals and track your progress. Stay motivated with
+          visual progress indicators.
+        </p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📚</span>
+        <h3>Exercise Library</h3>
+        <p>
+          Browse our comprehensive exercise library with detailed instructions
+          and calorie information.
+        </p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔥</span>
+        <h3>Calorie Tracking</h3>
+        <p>
+          Automatically calculate calories burned based on exercise type and
+          duration.
+        </p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📈</span>
+        <h3>Progress Reports</h3>
+        <p>View your workout history and see how you're improving over time.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">👤</span>
+        <h3>Personal Profile</h3>
+        <p>
+          Customize your profile with your fitness preferences and personal
+          information.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (!user) { %>
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Start Your Fitness Journey?</h2>
+    <p>
+      Join FitTracker today and take control of your health and fitness goals.
+    </p>
+    <a href="/auth/register" class="btn btn-primary btn-lg"
+      >Create Free Account</a
+    >
+  </div>
+</section>
+<% } %> <%- include('partials/footer') %>

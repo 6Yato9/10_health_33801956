@@ -1,0 +1,11 @@
+home=http://localhost:8000/
+about=http://localhost:8000/about
+search=http://localhost:8000/search
+exercises=http://localhost:8000/exercises
+login=http://localhost:8000/auth/login
+register=http://localhost:8000/auth/register
+workouts=http://localhost:8000/workouts
+add_workout=http://localhost:8000/workouts/new
+goals=http://localhost:8000/goals
+add_goal=http://localhost:8000/goals/new
+profile=http://localhost:8000/auth/profile

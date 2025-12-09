@@ -1,0 +1,82 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>My Goals</h1>
+            <p>Track your fitness goals and celebrate achievements</p>
+        </div>
+        <a href="/goals/new" class="btn btn-primary">+ New Goal</a>
+    </div>
+    
+    <div class="filter-bar">
+        <form action="/goals" method="GET" class="filter-form">
+            <div class="filter-group">
+                <label for="status">Status</label>
+                <select name="status" id="status" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Goals</option>
+                    <option value="active" <%= selectedStatus === 'active' ? 'selected' : '' %>>Active</option>
+                    <option value="completed" <%= selectedStatus === 'completed' ? 'selected' : '' %>>Completed</option>
+                    <option value="abandoned" <%= selectedStatus === 'abandoned' ? 'selected' : '' %>>Abandoned</option>
+                </select>
+            </div>
+            <% if (selectedStatus) { %>
+                <a href="/goals" class="btn btn-outline btn-sm">Clear Filter</a>
+            <% } %>
+        </form>
+    </div>
+    
+    <% if (goals.length > 0) { %>
+        <div class="goals-grid">
+            <% goals.forEach(function(goal) { %>
+                <div class="goal-card goal-<%= goal.status %>">
+                    <div class="goal-header">
+                        <span class="goal-type"><%= goal.goal_type.replace('_', ' ') %></span>
+                        <span class="goal-status status-<%= goal.status %>"><%= goal.status %></span>
+                    </div>
+                    
+                    <h3><a href="/goals/<%= goal.id %>"><%= goal.title %></a></h3>
+                    
+                    <% if (goal.description) { %>
+                        <p class="goal-description"><%= goal.description.substring(0, 100) %><%= goal.description.length > 100 ? '...' : '' %></p>
+                    <% } %>
+                    
+                    <% if (goal.target_value) { %>
+                        <div class="goal-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: <%= goal.progress %>%"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span><%= goal.current_value || 0 %> / <%= goal.target_value %> <%= goal.unit || '' %></span>
+                                <span><%= goal.progress %>%</span>
+                            </div>
+                        </div>
+                    <% } %>
+                    
+                    <div class="goal-dates">
+                        <span>Started: <%= new Date(goal.start_date).toLocaleDateString() %></span>
+                        <% if (goal.target_date) { %>
+                            <span>Target: <%= new Date(goal.target_date).toLocaleDateString() %></span>
+                        <% } %>
+                    </div>
+                    
+                    <div class="goal-actions">
+                        <a href="/goals/<%= goal.id %>" class="btn btn-sm btn-outline">View</a>
+                        <% if (goal.status === 'active') { %>
+                            <a href="/goals/<%= goal.id %>/edit" class="btn btn-sm btn-outline">Update</a>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <h2>No Goals Yet</h2>
+            <p>Set your first fitness goal and start tracking your progress.</p>
+            <a href="/goals/new" class="btn btn-primary">Create Your First Goal</a>
+        </div>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>
