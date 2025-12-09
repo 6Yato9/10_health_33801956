@@ -1,1 +1,14 @@
 home=http://www.doc.gold.ac.uk/usr/112/
+login=https://www.doc.gold.ac.uk/usr/112/auth/login
+register=https://www.doc.gold.ac.uk/usr/112/auth/register
+exercises=https://www.doc.gold.ac.uk/usr/112/exercises
+search=https://www.doc.gold.ac.uk/usr/112/search
+about=https://www.doc.gold.ac.uk/usr/112/about
+
+must be logged in
+
+workouts=https://www.doc.gold.ac.uk/usr/112/workouts
+new_workout=https://www.doc.gold.ac.uk/usr/112/workouts/new
+goals=https://www.doc.gold.ac.uk/usr/112/goals
+new_goal=https://www.doc.gold.ac.uk/usr/112/goals/new
+profile=https://www.doc.gold.ac.uk/usr/112/auth/profile
