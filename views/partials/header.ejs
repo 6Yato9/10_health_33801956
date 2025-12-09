@@ -7,10 +7,7 @@
     <link rel="stylesheet" href="<%= basePath %>/css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <nav class="navbar">
@@ -19,25 +16,16 @@
           <span class="brand-icon">💪</span>
           <span class="brand-text">FitTracker</span>
         </a>
-
-        <button
-          class="nav-toggle"
-          id="navToggle"
-          aria-label="Toggle navigation"
-        >
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
           <span></span>
           <span></span>
           <span></span>
         </button>
-
         <ul class="nav-menu" id="navMenu">
           <li><a href="<%= basePath %>/" class="nav-link">Home</a></li>
-          <li>
-            <a href="<%= basePath %>/exercises" class="nav-link">Exercises</a>
-          </li>
+          <li><a href="<%= basePath %>/exercises" class="nav-link">Exercises</a></li>
           <li><a href="<%= basePath %>/search" class="nav-link">Search</a></li>
           <li><a href="<%= basePath %>/about" class="nav-link">About</a></li>
-
           <% if (user) { %>
           <li class="nav-dropdown">
             <a href="#" class="nav-link dropdown-toggle">My Fitness</a>
@@ -50,9 +38,7 @@
           </li>
           <li class="nav-dropdown">
             <a href="#" class="nav-link dropdown-toggle">
-              <span class="user-avatar"
-                ><%= user.username.charAt(0).toUpperCase() %></span
-              >
+              <span class="user-avatar"><%= user.username.charAt(0).toUpperCase() %></span>
               <%= user.username %>
             </a>
             <ul class="dropdown-menu">
@@ -61,37 +47,24 @@
             </ul>
           </li>
           <% } else { %>
-          <li>
-            <a href="<%= basePath %>/auth/login" class="nav-link">Login</a>
-          </li>
-          <li>
-            <a href="<%= basePath %>/auth/register" class="nav-link btn-primary"
-              >Sign Up</a
-            >
-          </li>
+          <li><a href="<%= basePath %>/auth/login" class="nav-link">Login</a></li>
+          <li><a href="<%= basePath %>/auth/register" class="nav-link btn-primary">Sign Up</a></li>
           <% } %>
         </ul>
       </div>
     </nav>
-
     <% if (success) { %>
     <div class="alert alert-success">
       <span class="alert-icon">✓</span>
       <%= success %>
-      <button class="alert-close" onclick="this.parentElement.remove()">
-        ×
-      </button>
+      <button class="alert-close" onclick="this.parentElement.remove()">×</button>
     </div>
-    <% } %> <% if (error) { %>
+    <% } %>
+    <% if (error) { %>
     <div class="alert alert-error">
       <span class="alert-icon">!</span>
       <%= error %>
-      <button class="alert-close" onclick="this.parentElement.remove()">
-        ×
-      </button>
+      <button class="alert-close" onclick="this.parentElement.remove()">×</button>
     </div>
     <% } %>
-
-    <main class="main-content"></main>
-  </body>
-</html>
+    <main class="main-content">
