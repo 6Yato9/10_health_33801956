@@ -5,75 +5,63 @@ const { pool } = require("../config/database");
 
 // Home page
 router.get("/", async (req, res) => {
+  // Default values
+  let stats = {
+    totalUsers: 0,
+    totalWorkouts: 0,
+    totalExercises: 0,
+  };
+  let recentWorkouts = [];
+  let userStats = null;
+
   try {
     // Get some statistics for the home page
-    let stats = {
-      totalUsers: 0,
-      totalWorkouts: 0,
-      totalExercises: 0,
-    };
+    const [userCount] = await pool.query("SELECT COUNT(*) as count FROM users");
+    const [workoutCount] = await pool.query(
+      "SELECT COUNT(*) as count FROM workouts"
+    );
+    const [exerciseCount] = await pool.query(
+      "SELECT COUNT(*) as count FROM exercises"
+    );
 
-    try {
-      const [userCount] = await pool.query(
-        "SELECT COUNT(*) as count FROM users"
-      );
-      const [workoutCount] = await pool.query(
-        "SELECT COUNT(*) as count FROM workouts"
-      );
-      const [exerciseCount] = await pool.query(
-        "SELECT COUNT(*) as count FROM exercises"
-      );
-
-      stats.totalUsers = userCount[0].count;
-      stats.totalWorkouts = workoutCount[0].count;
-      stats.totalExercises = exerciseCount[0].count;
-    } catch (dbError) {
-      console.log("Database not available, using default stats");
-    }
-
-    // Get recent workouts if user is logged in
-    let recentWorkouts = [];
-    let userStats = null;
-
-    if (req.session.user) {
-      try {
-        const [workouts] = await pool.query(
-          `SELECT w.*, COUNT(we.id) as exercise_count 
-                     FROM workouts w 
-                     LEFT JOIN workout_exercises we ON w.id = we.workout_id 
-                     WHERE w.user_id = ? 
-                     GROUP BY w.id 
-                     ORDER BY w.workout_date DESC 
-                     LIMIT 5`,
-          [req.session.user.id]
-        );
-        recentWorkouts = workouts;
-
-        const [statsResult] = await pool.query(
-          `SELECT * FROM user_stats WHERE user_id = ?`,
-          [req.session.user.id]
-        );
-        userStats = statsResult[0] || null;
-      } catch (dbError) {
-        console.log("Could not fetch user data");
-      }
-    }
-
-    res.render("home", {
-      title: "Fitness Tracker - Home",
-      stats,
-      recentWorkouts,
-      userStats,
-    });
-  } catch (error) {
-    console.error("Home page error:", error);
-    res.render("home", {
-      title: "Fitness Tracker - Home",
-      stats: { totalUsers: 0, totalWorkouts: 0, totalExercises: 0 },
-      recentWorkouts: [],
-      userStats: null,
-    });
+    stats.totalUsers = userCount[0].count;
+    stats.totalWorkouts = workoutCount[0].count;
+    stats.totalExercises = exerciseCount[0].count;
+  } catch (dbError) {
+    console.log("Database stats error:", dbError.message);
   }
+
+  // Get recent workouts if user is logged in
+  if (req.session && req.session.user) {
+    try {
+      const [workouts] = await pool.query(
+        `SELECT w.*, COUNT(we.id) as exercise_count 
+         FROM workouts w 
+         LEFT JOIN workout_exercises we ON w.id = we.workout_id 
+         WHERE w.user_id = ? 
+         GROUP BY w.id 
+         ORDER BY w.workout_date DESC 
+         LIMIT 5`,
+        [req.session.user.id]
+      );
+      recentWorkouts = workouts || [];
+
+      const [statsResult] = await pool.query(
+        `SELECT * FROM user_stats WHERE user_id = ?`,
+        [req.session.user.id]
+      );
+      userStats = statsResult[0] || null;
+    } catch (dbError) {
+      console.log("User data error:", dbError.message);
+    }
+  }
+
+  res.render("home", {
+    title: "Fitness Tracker - Home",
+    stats: stats,
+    recentWorkouts: recentWorkouts,
+    userStats: userStats,
+  });
 });
 
 // About page

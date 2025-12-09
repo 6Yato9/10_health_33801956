@@ -68,24 +68,24 @@
       </div>
     </nav>
 
-    <main class="main-content">
-      <% if (success) { %>
-      <div class="alert alert-success">
-        <span class="alert-icon">✓</span>
-        <%= success %>
-        <button class="alert-close" onclick="this.parentElement.remove()">
-          ×
-        </button>
-      </div>
-      <% } %> <% if (error) { %>
-      <div class="alert alert-error">
-        <span class="alert-icon">!</span>
-        <%= error %>
-        <button class="alert-close" onclick="this.parentElement.remove()">
-          ×
-        </button>
-      </div>
-      <% } %>
-    </main>
+    <% if (success) { %>
+    <div class="alert alert-success">
+      <span class="alert-icon">✓</span>
+      <%= success %>
+      <button class="alert-close" onclick="this.parentElement.remove()">
+        ×
+      </button>
+    </div>
+    <% } %> <% if (error) { %>
+    <div class="alert alert-error">
+      <span class="alert-icon">!</span>
+      <%= error %>
+      <button class="alert-close" onclick="this.parentElement.remove()">
+        ×
+      </button>
+    </div>
+    <% } %>
+
+    <main class="main-content"></main>
   </body>
 </html>
