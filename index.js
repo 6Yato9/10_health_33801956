@@ -9,7 +9,8 @@ const path = require("path");
 const app = express();
 const PORT = 8000;
 
-// Import routes
+// Import database and routes
+const { testConnection } = require("./config/database");
 const mainRoutes = require("./routes/main");
 const authRoutes = require("./routes/auth");
 const workoutRoutes = require("./routes/workouts");
@@ -70,9 +71,20 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Fitness Tracker app listening on port ${PORT}`);
   console.log(
     `Visit: ${process.env.HEALTH_BASE_PATH || `http://localhost:${PORT}`}`
   );
+
+  // Test database connection on startup
+  const dbConnected = await testConnection();
+  if (!dbConnected) {
+    console.error(
+      "WARNING: Database connection failed. Some features may not work."
+    );
+    console.error(
+      "Make sure MySQL is running and the database is set up correctly."
+    );
+  }
 });
