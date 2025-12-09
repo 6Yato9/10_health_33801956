@@ -72,7 +72,7 @@ router.post("/login", isNotAuthenticated, async (req, res) => {
     };
 
     req.session.success = "Welcome back, " + user.username + "!";
-    res.redirect(getBasePath() + "/");
+    res.redirect("../");
   } catch (error) {
     console.error("Login error:", error);
     errors.push("An error occurred. Please try again.");
@@ -170,7 +170,7 @@ router.post("/register", isNotAuthenticated, async (req, res) => {
 
     req.session.success =
       "Account created successfully! Welcome to Fitness Tracker!";
-    res.redirect(getBasePath() + "/");
+    res.redirect("../");
   } catch (error) {
     console.error("Registration error:", error);
     errors.push("An error occurred during registration. Please try again.");
@@ -188,7 +188,7 @@ router.get("/logout", (req, res) => {
     if (err) {
       console.error("Logout error:", err);
     }
-    res.redirect(getBasePath() + "/");
+    res.redirect("../");
   });
 });
 
@@ -286,7 +286,7 @@ router.post("/profile", isAuthenticated, async (req, res) => {
     };
 
     req.session.success = "Profile updated successfully!";
-    res.redirect(getBasePath() + "/auth/profile");
+    res.redirect("./profile");
   } catch (error) {
     console.error("Profile update error:", error);
     errors.push("Could not update profile. Please try again.");

@@ -122,7 +122,7 @@ router.post("/new", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Goal created successfully!";
-    res.redirect(getBasePath() + "/goals/" + result.insertId);
+    res.redirect("./" + result.insertId);
   } catch (error) {
     console.error("Create goal error:", error);
     errors.push("Could not save goal. Please try again.");
@@ -280,7 +280,7 @@ router.post("/:id/edit", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Goal updated successfully!";
-    res.redirect(getBasePath() + "/goals/" + req.params.id);
+    res.redirect("./" + req.params.id);
   } catch (error) {
     console.error("Update goal error:", error);
     res
@@ -323,11 +323,11 @@ router.post("/:id/progress", isAuthenticated, async (req, res) => {
       req.session.success = "Progress updated!";
     }
 
-    res.redirect(getBasePath() + "/goals/" + req.params.id);
+    res.redirect("./" + req.params.id);
   } catch (error) {
     console.error("Update progress error:", error);
     req.session.error = "Could not update progress";
-    res.redirect(getBasePath() + "/goals/" + req.params.id);
+    res.redirect("./" + req.params.id);
   }
 });
 
@@ -344,7 +344,7 @@ router.post("/:id/delete", isAuthenticated, async (req, res) => {
     }
 
     req.session.success = "Goal deleted successfully!";
-    res.redirect(getBasePath() + "/goals");
+    res.redirect("./");
   } catch (error) {
     console.error("Delete goal error:", error);
     res

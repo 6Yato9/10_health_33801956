@@ -177,7 +177,7 @@ router.post("/new", isAuthenticated, async (req, res) => {
     }
 
     req.session.success = "Workout logged successfully!";
-    res.redirect(getBasePath() + "/workouts/" + workoutId);
+    res.redirect("./" + workoutId);
   } catch (error) {
     console.error("Create workout error:", error);
     errors.push("Could not save workout. Please try again.");
@@ -364,7 +364,7 @@ router.post("/:id/edit", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Workout updated successfully!";
-    res.redirect(getBasePath() + "/workouts/" + req.params.id);
+    res.redirect("./" + req.params.id);
   } catch (error) {
     console.error("Update workout error:", error);
     res
@@ -386,7 +386,7 @@ router.post("/:id/delete", isAuthenticated, async (req, res) => {
     }
 
     req.session.success = "Workout deleted successfully!";
-    res.redirect(getBasePath() + "/workouts");
+    res.redirect("./");
   } catch (error) {
     console.error("Delete workout error:", error);
     res
@@ -427,11 +427,11 @@ router.post("/:id/exercises", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Exercise added to workout!";
-    res.redirect(getBasePath() + "/workouts/" + req.params.id);
+    res.redirect("./" + req.params.id);
   } catch (error) {
     console.error("Add exercise error:", error);
     req.session.error = "Could not add exercise";
-    res.redirect(getBasePath() + "/workouts/" + req.params.id);
+    res.redirect("./" + req.params.id);
   }
 });
 
@@ -458,11 +458,11 @@ router.post(
       ]);
 
       req.session.success = "Exercise removed from workout!";
-      res.redirect(getBasePath() + "/workouts/" + req.params.id);
+      res.redirect("./" + req.params.id);
     } catch (error) {
       console.error("Remove exercise error:", error);
       req.session.error = "Could not remove exercise";
-      res.redirect(getBasePath() + "/workouts/" + req.params.id);
+      res.redirect("./" + req.params.id);
     }
   }
 );
