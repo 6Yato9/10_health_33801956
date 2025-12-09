@@ -6,7 +6,7 @@
       <h1>My Workouts</h1>
       <p>Track and manage your workout history</p>
     </div>
-    <a href="/workouts/new" class="btn btn-primary">+ Log Workout</a>
+    <a href="<%= basePath %>/workouts/new" class="btn btn-primary">+ Log Workout</a>
   </div>
 
   <% if (workouts.length > 0) { %>
@@ -23,7 +23,7 @@
         >
       </div>
       <div class="workout-info">
-        <h3><a href="/workouts/<%= workout.id %>"><%= workout.name %></a></h3>
+        <h3><a href="<%= basePath %>/workouts/<%= workout.id %>"><%= workout.name %></a></h3>
         <div class="workout-meta">
           <% if (workout.duration_minutes) { %>
           <span>⏱️ <%= workout.duration_minutes %> min</span>
@@ -46,11 +46,11 @@
         <% } %> <% } %>
       </div>
       <div class="workout-actions">
-        <a href="/workouts/<%= workout.id %>" class="btn btn-sm btn-outline"
+        <a href="<%= basePath %>/workouts/<%= workout.id %>" class="btn btn-sm btn-outline"
           >View</a
         >
         <a
-          href="/workouts/<%= workout.id %>/edit"
+          href="<%= basePath %>/workouts/<%= workout.id %>/edit"
           class="btn btn-sm btn-outline"
           >Edit</a
         >
@@ -63,7 +63,7 @@
   <div class="pagination">
     <% if (currentPage > 1) { %>
     <a
-      href="/workouts?page=<%= currentPage - 1 %>"
+      href="<%= basePath %>/workouts?page=<%= currentPage - 1 %>"
       class="btn btn-sm btn-outline"
       >← Previous</a
     >
@@ -73,7 +73,7 @@
 
     <% if (currentPage < totalPages) { %>
     <a
-      href="/workouts?page=<%= currentPage + 1 %>"
+      href="<%= basePath %>/workouts?page=<%= currentPage + 1 %>"
       class="btn btn-sm btn-outline"
       >Next →</a
     >
@@ -84,7 +84,7 @@
     <div class="empty-icon">🏋️</div>
     <h2>No Workouts Yet</h2>
     <p>Start tracking your fitness journey by logging your first workout.</p>
-    <a href="/workouts/new" class="btn btn-primary">Log Your First Workout</a>
+    <a href="<%= basePath %>/workouts/new" class="btn btn-primary">Log Your First Workout</a>
   </div>
   <% } %>
 </div>

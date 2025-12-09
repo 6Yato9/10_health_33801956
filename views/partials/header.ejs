@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="<%= basePath %>/css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,7 +15,7 @@
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="/" class="nav-brand">
+        <a href="<%= basePath %>/" class="nav-brand">
           <span class="brand-icon">💪</span>
           <span class="brand-text">FitTracker</span>
         </a>
@@ -31,19 +31,21 @@
         </button>
 
         <ul class="nav-menu" id="navMenu">
-          <li><a href="/" class="nav-link">Home</a></li>
-          <li><a href="/exercises" class="nav-link">Exercises</a></li>
-          <li><a href="/search" class="nav-link">Search</a></li>
-          <li><a href="/about" class="nav-link">About</a></li>
+          <li><a href="<%= basePath %>/" class="nav-link">Home</a></li>
+          <li>
+            <a href="<%= basePath %>/exercises" class="nav-link">Exercises</a>
+          </li>
+          <li><a href="<%= basePath %>/search" class="nav-link">Search</a></li>
+          <li><a href="<%= basePath %>/about" class="nav-link">About</a></li>
 
           <% if (user) { %>
           <li class="nav-dropdown">
             <a href="#" class="nav-link dropdown-toggle">My Fitness</a>
             <ul class="dropdown-menu">
-              <li><a href="/workouts">My Workouts</a></li>
-              <li><a href="/workouts/new">Log Workout</a></li>
-              <li><a href="/goals">My Goals</a></li>
-              <li><a href="/goals/new">New Goal</a></li>
+              <li><a href="<%= basePath %>/workouts">My Workouts</a></li>
+              <li><a href="<%= basePath %>/workouts/new">Log Workout</a></li>
+              <li><a href="<%= basePath %>/goals">My Goals</a></li>
+              <li><a href="<%= basePath %>/goals/new">New Goal</a></li>
             </ul>
           </li>
           <li class="nav-dropdown">
@@ -54,14 +56,18 @@
               <%= user.username %>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="/auth/profile">Profile</a></li>
-              <li><a href="/auth/logout">Logout</a></li>
+              <li><a href="<%= basePath %>/auth/profile">Profile</a></li>
+              <li><a href="<%= basePath %>/auth/logout">Logout</a></li>
             </ul>
           </li>
           <% } else { %>
-          <li><a href="/auth/login" class="nav-link">Login</a></li>
           <li>
-            <a href="/auth/register" class="nav-link btn-primary">Sign Up</a>
+            <a href="<%= basePath %>/auth/login" class="nav-link">Login</a>
+          </li>
+          <li>
+            <a href="<%= basePath %>/auth/register" class="nav-link btn-primary"
+              >Sign Up</a
+            >
           </li>
           <% } %>
         </ul>

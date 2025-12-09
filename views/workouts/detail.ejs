@@ -2,7 +2,7 @@
 
 <div class="container">
   <nav class="breadcrumb">
-    <a href="/workouts">Workouts</a>
+    <a href="<%= basePath %>/workouts">Workouts</a>
     <span>/</span>
     <span><%= workout.name %></span>
   </nav>
@@ -65,7 +65,7 @@
         <div class="exercise-item">
           <div class="exercise-item-header">
             <h4>
-              <a href="/exercises/<%= we.exercise_id %>"
+              <a href="<%= basePath %>/exercises/<%= we.exercise_id %>"
                 ><%= we.exercise_name %></a
               >
             </h4>
@@ -98,10 +98,10 @@
     </div>
 
     <div class="detail-actions">
-      <a href="/workouts/<%= workout.id %>/edit" class="btn btn-primary"
+      <a href="<%= basePath %>/workouts/<%= workout.id %>/edit" class="btn btn-primary"
         >Edit Workout</a
       >
-      <a href="/workouts" class="btn btn-outline">Back to Workouts</a>
+      <a href="<%= basePath %>/workouts" class="btn btn-outline">Back to Workouts</a>
     </div>
   </div>
 </div>

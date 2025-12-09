@@ -9,22 +9,22 @@
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/exercises">Exercises</a></li>
-                    <li><a href="/search">Search</a></li>
-                    <li><a href="/about">About</a></li>
+                    <li><a href="<%= basePath %>/">Home</a></li>
+                    <li><a href="<%= basePath %>/exercises">Exercises</a></li>
+                    <li><a href="<%= basePath %>/search">Search</a></li>
+                    <li><a href="<%= basePath %>/about">About</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Account</h4>
                 <ul>
                     <% if (user) { %>
-                        <li><a href="/workouts">My Workouts</a></li>
-                        <li><a href="/goals">My Goals</a></li>
-                        <li><a href="/auth/profile">Profile</a></li>
+                        <li><a href="<%= basePath %>/workouts">My Workouts</a></li>
+                        <li><a href="<%= basePath %>/goals">My Goals</a></li>
+                        <li><a href="<%= basePath %>/auth/profile">Profile</a></li>
                     <% } else { %>
-                        <li><a href="/auth/login">Login</a></li>
-                        <li><a href="/auth/register">Register</a></li>
+                        <li><a href="<%= basePath %>/auth/login">Login</a></li>
+                        <li><a href="<%= basePath %>/auth/register">Register</a></li>
                     <% } %>
                 </ul>
             </div>

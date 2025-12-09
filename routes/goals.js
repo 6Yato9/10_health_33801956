@@ -4,6 +4,9 @@ const router = express.Router();
 const { pool } = require("../config/database");
 const { isAuthenticated } = require("../middleware/auth");
 
+// Helper to get base path for redirects
+const getBasePath = () => process.env.BASE_PATH || "";
+
 // List all goals for current user
 router.get("/", isAuthenticated, async (req, res) => {
   try {
@@ -119,7 +122,7 @@ router.post("/new", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Goal created successfully!";
-    res.redirect("/goals/" + result.insertId);
+    res.redirect(getBasePath() + "/goals/" + result.insertId);
   } catch (error) {
     console.error("Create goal error:", error);
     errors.push("Could not save goal. Please try again.");
@@ -277,7 +280,7 @@ router.post("/:id/edit", isAuthenticated, async (req, res) => {
     );
 
     req.session.success = "Goal updated successfully!";
-    res.redirect("/goals/" + req.params.id);
+    res.redirect(getBasePath() + "/goals/" + req.params.id);
   } catch (error) {
     console.error("Update goal error:", error);
     res
@@ -320,11 +323,11 @@ router.post("/:id/progress", isAuthenticated, async (req, res) => {
       req.session.success = "Progress updated!";
     }
 
-    res.redirect("/goals/" + req.params.id);
+    res.redirect(getBasePath() + "/goals/" + req.params.id);
   } catch (error) {
     console.error("Update progress error:", error);
     req.session.error = "Could not update progress";
-    res.redirect("/goals/" + req.params.id);
+    res.redirect(getBasePath() + "/goals/" + req.params.id);
   }
 });
 
@@ -341,7 +344,7 @@ router.post("/:id/delete", isAuthenticated, async (req, res) => {
     }
 
     req.session.success = "Goal deleted successfully!";
-    res.redirect("/goals");
+    res.redirect(getBasePath() + "/goals");
   } catch (error) {
     console.error("Delete goal error:", error);
     res

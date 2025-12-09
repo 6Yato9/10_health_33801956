@@ -2,7 +2,7 @@
 
 <div class="container">
     <nav class="breadcrumb">
-        <a href="/goals">Goals</a>
+        <a href="<%= basePath %>/goals">Goals</a>
         <span>/</span>
         <span><%= goal ? 'Edit Goal' : 'Create New Goal' %></span>
     </nav>
@@ -109,10 +109,10 @@
             
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary"><%= goal ? 'Update Goal' : 'Create Goal' %></button>
-                <a href="/goals" class="btn btn-outline">Cancel</a>
+                <a href="<%= basePath %>/goals" class="btn btn-outline">Cancel</a>
                 
                 <% if (goal) { %>
-                    <form action="/goals/<%= goal.id %>/delete" method="POST" style="display:inline; margin-left: auto;">
+                    <form action="<%= basePath %>/goals/<%= goal.id %>/delete" method="POST" style="display:inline; margin-left: auto;">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this goal?')">Delete Goal</button>
                     </form>
                 <% } %>

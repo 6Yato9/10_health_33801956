@@ -2,7 +2,7 @@
 
 <div class="container">
   <nav class="breadcrumb">
-    <a href="/goals">Goals</a>
+    <a href="<%= basePath %>/goals">Goals</a>
     <span>/</span>
     <span><%= goal.title %></span>
   </nav>
@@ -48,7 +48,7 @@
     <div class="quick-update card">
       <h3>Quick Progress Update</h3>
       <form
-        action="/goals/<%= goal.id %>/progress"
+        action="<%= basePath %>/goals/<%= goal.id %>/progress"
         method="POST"
         class="inline-form"
       >
@@ -151,8 +151,8 @@
     </div>
 
     <div class="detail-actions">
-      <a href="/goals/<%= goal.id %>/edit" class="btn btn-primary">Edit Goal</a>
-      <a href="/goals" class="btn btn-outline">Back to Goals</a>
+      <a href="<%= basePath %>/goals/<%= goal.id %>/edit" class="btn btn-primary">Edit Goal</a>
+      <a href="<%= basePath %>/goals" class="btn btn-outline">Back to Goals</a>
     </div>
   </div>
 </div>

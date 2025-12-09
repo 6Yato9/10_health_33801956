@@ -35,11 +35,13 @@ app.use(
   })
 );
 
-// Make session data available to all views
+// Make session data and base path available to all views
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
   res.locals.success = req.session.success;
   res.locals.error = req.session.error;
+  // Base path for URLs (e.g., '/usr/112' for gold.ac.uk deployment)
+  res.locals.basePath = process.env.BASE_PATH || "";
   delete req.session.success;
   delete req.session.error;
   next();

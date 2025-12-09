@@ -2,7 +2,7 @@
 
 <div class="container">
   <nav class="breadcrumb">
-    <a href="/exercises">Exercises</a>
+    <a href="<%= basePath %>/exercises">Exercises</a>
     <span>/</span>
     <span><%= exercise.name %></span>
   </nav>
@@ -59,12 +59,12 @@
 
           <% if (user) { %>
           <a
-            href="/workouts/new?exercise=<%= exercise.id %>"
+            href="<%= basePath %>/workouts/new?exercise=<%= exercise.id %>"
             class="btn btn-primary btn-block"
             >Add to Workout</a
           >
           <% } else { %>
-          <a href="/auth/login" class="btn btn-primary btn-block"
+          <a href="<%= basePath %>/auth/login" class="btn btn-primary btn-block"
             >Login to Track</a
           >
           <% } %>
@@ -106,7 +106,7 @@
   </div>
 
   <div class="back-link">
-    <a href="/exercises" class="btn btn-outline">← Back to Exercise Library</a>
+    <a href="<%= basePath %>/exercises" class="btn btn-outline">← Back to Exercise Library</a>
   </div>
 </div>
 

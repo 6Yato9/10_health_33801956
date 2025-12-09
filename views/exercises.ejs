@@ -7,7 +7,7 @@
     </div>
     
     <div class="filter-bar">
-        <form action="/exercises" method="GET" class="filter-form">
+        <form action="<%= basePath %>/exercises" method="GET" class="filter-form">
             <div class="filter-group">
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-select" onchange="this.form.submit()">
@@ -29,7 +29,7 @@
             </div>
             
             <% if (selectedCategory || selectedDifficulty) { %>
-                <a href="/exercises" class="btn btn-outline btn-sm">Clear Filters</a>
+                <a href="<%= basePath %>/exercises" class="btn btn-outline btn-sm">Clear Filters</a>
             <% } %>
         </form>
     </div>
@@ -42,21 +42,21 @@
                         <span class="exercise-category"><%= exercise.category_name || 'General' %></span>
                         <span class="exercise-difficulty difficulty-<%= exercise.difficulty %>"><%= exercise.difficulty %></span>
                     </div>
-                    <h3><a href="/exercises/<%= exercise.id %>"><%= exercise.name %></a></h3>
+                    <h3><a href="<%= basePath %>/exercises/<%= exercise.id %>"><%= exercise.name %></a></h3>
                     <% if (exercise.muscle_group) { %>
                         <p class="exercise-muscles"><strong>Targets:</strong> <%= exercise.muscle_group %></p>
                     <% } %>
                     <% if (exercise.calories_per_minute) { %>
                         <p class="exercise-calories">🔥 ~<%= exercise.calories_per_minute %> cal/min</p>
                     <% } %>
-                    <a href="/exercises/<%= exercise.id %>" class="btn btn-sm btn-outline">View Details</a>
+                    <a href="<%= basePath %>/exercises/<%= exercise.id %>" class="btn btn-sm btn-outline">View Details</a>
                 </div>
             <% }); %>
         </div>
     <% } else { %>
         <div class="empty-state">
             <p>No exercises found matching your criteria.</p>
-            <a href="/exercises" class="btn btn-primary">View All Exercises</a>
+            <a href="<%= basePath %>/exercises" class="btn btn-primary">View All Exercises</a>
         </div>
     <% } %>
 </div>

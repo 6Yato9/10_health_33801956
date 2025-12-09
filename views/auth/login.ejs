@@ -18,7 +18,7 @@
       </div>
       <% } %>
 
-      <form action="/auth/login" method="POST" class="auth-form">
+      <form action="<%= basePath %>/auth/login" method="POST" class="auth-form">
         <div class="form-group">
           <label for="username">Username</label>
           <input
@@ -46,7 +46,10 @@
       </form>
 
       <div class="auth-footer">
-        <p>Don't have an account? <a href="/auth/register">Create one</a></p>
+        <p>
+          Don't have an account?
+          <a href="<%= basePath %>/auth/register">Create one</a>
+        </p>
       </div>
     </div>
   </div>

@@ -9,15 +9,21 @@
     </p>
     <% if (!user) { %>
     <div class="hero-buttons">
-      <a href="/auth/register" class="btn btn-primary btn-lg"
+      <a href="<%= basePath %>/auth/register" class="btn btn-primary btn-lg"
         >Get Started Free</a
       >
-      <a href="/auth/login" class="btn btn-outline btn-lg">Login</a>
+      <a href="<%= basePath %>/auth/login" class="btn btn-outline btn-lg"
+        >Login</a
+      >
     </div>
     <% } else { %>
     <div class="hero-buttons">
-      <a href="/workouts/new" class="btn btn-primary btn-lg">Log Workout</a>
-      <a href="/goals/new" class="btn btn-outline btn-lg">Set New Goal</a>
+      <a href="<%= basePath %>/workouts/new" class="btn btn-primary btn-lg"
+        >Log Workout</a
+      >
+      <a href="<%= basePath %>/goals/new" class="btn btn-outline btn-lg"
+        >Set New Goal</a
+      >
     </div>
     <% } %>
   </div>
@@ -88,7 +94,7 @@
         <ul class="recent-list">
           <% recentWorkouts.forEach(function(workout) { %>
           <li class="recent-item">
-            <a href="/workouts/<%= workout.id %>">
+            <a href="<%= basePath %>/workouts/<%= workout.id %>">
               <span class="recent-name"><%= workout.name %></span>
               <span class="recent-meta">
                 <%= new Date(workout.workout_date).toLocaleDateString() %> <% if
@@ -99,10 +105,13 @@
           </li>
           <% }); %>
         </ul>
-        <a href="/workouts" class="btn btn-sm">View All Workouts</a>
+        <a href="<%= basePath %>/workouts" class="btn btn-sm"
+          >View All Workouts</a
+        >
         <% } else { %>
         <p class="empty-state">
-          No workouts yet. <a href="/workouts/new">Log your first workout!</a>
+          No workouts yet.
+          <a href="<%= basePath %>/workouts/new">Log your first workout!</a>
         </p>
         <% } %>
       </div>
@@ -171,7 +180,7 @@
     <p>
       Join FitTracker today and take control of your health and fitness goals.
     </p>
-    <a href="/auth/register" class="btn btn-primary btn-lg"
+    <a href="<%= basePath %>/auth/register" class="btn btn-primary btn-lg"
       >Create Free Account</a
     >
   </div>

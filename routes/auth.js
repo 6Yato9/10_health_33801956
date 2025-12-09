@@ -9,6 +9,9 @@ const {
   validatePassword,
 } = require("../middleware/auth");
 
+// Helper to get base path for redirects
+const getBasePath = () => process.env.BASE_PATH || "";
+
 // Login page
 router.get("/login", isNotAuthenticated, (req, res) => {
   res.render("auth/login", {
@@ -69,7 +72,7 @@ router.post("/login", isNotAuthenticated, async (req, res) => {
     };
 
     req.session.success = "Welcome back, " + user.username + "!";
-    res.redirect("/");
+    res.redirect(getBasePath() + "/");
   } catch (error) {
     console.error("Login error:", error);
     errors.push("An error occurred. Please try again.");
@@ -167,7 +170,7 @@ router.post("/register", isNotAuthenticated, async (req, res) => {
 
     req.session.success =
       "Account created successfully! Welcome to Fitness Tracker!";
-    res.redirect("/");
+    res.redirect(getBasePath() + "/");
   } catch (error) {
     console.error("Registration error:", error);
     errors.push("An error occurred during registration. Please try again.");
@@ -185,7 +188,7 @@ router.get("/logout", (req, res) => {
     if (err) {
       console.error("Logout error:", err);
     }
-    res.redirect("/");
+    res.redirect(getBasePath() + "/");
   });
 });
 
@@ -283,7 +286,7 @@ router.post("/profile", isAuthenticated, async (req, res) => {
     };
 
     req.session.success = "Profile updated successfully!";
-    res.redirect("/auth/profile");
+    res.redirect(getBasePath() + "/auth/profile");
   } catch (error) {
     console.error("Profile update error:", error);
     errors.push("Could not update profile. Please try again.");
